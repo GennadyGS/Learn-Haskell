@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Phoityne.Example.Math
   other-modules:
       Paths_my_project
   hs-source-dirs:
@@ -50,6 +51,8 @@ test-suite my-project-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Phoityne.Example.MathSpec
+      SpecHelper
       Paths_my_project
   hs-source-dirs:
       test
