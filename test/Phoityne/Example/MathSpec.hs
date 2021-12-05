@@ -1,6 +1,7 @@
 module Phoityne.Example.MathSpec where
 
-import SpecHelper
+import Test.Hspec
+import Phoityne.Example.Math
 
 spec :: Spec
 spec = 

@@ -1,6 +1,7 @@
 module Main where
 
-import Lib
+import LeapYear
 
 main :: IO ()
-main = someFunc
+main = do
+    print $ isLeapYear 2020
