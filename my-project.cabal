@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       LeapYear
+      List
       Pangram
       Phoityne.Example.Math
   other-modules:
@@ -53,6 +54,7 @@ test-suite my-project-test
   main-is: Spec.hs
   other-modules:
       LeapYearSpec
+      ListSpec
       PangramSpec
       Phoityne.Example.MathSpec
       Paths_my_project
