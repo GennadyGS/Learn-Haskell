@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      CollatzConjecture
       LeapYear
       List
       Pangram
@@ -53,6 +54,7 @@ test-suite my-project-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      CollatzConjectureSpec
       LeapYearSpec
       ListSpec
       PangramSpec

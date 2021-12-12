@@ -1,8 +1,9 @@
 {
     "cSpell.words": [
-        "Hspec",
-        "Pangram",
-        "Phoityne"
+      "collatz",
+      "Hspec",
+      "Pangram",
+      "Phoityne"
     ],
     "editor.detectIndentation": false,
     "editor.tabSize": 2
