@@ -5,6 +5,7 @@ import qualified Data.List as List
 import qualified Data.List.NonEmpty as List.NonEmpty
 import LeapYear
 import Pangram
+import Control.Monad
 
 main :: IO ()
 main = do
@@ -21,3 +22,4 @@ main = do
     & List.map (\l -> (List.NonEmpty.head l & fst, l & List.NonEmpty.toList & List.map snd))
     & print
   (-2) `mod` 6 & print
+  (read "100" :: Int) & print
