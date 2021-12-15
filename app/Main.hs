@@ -20,3 +20,4 @@ main = do
     & List.NonEmpty.groupAllWith fst
     & List.map (\l -> (List.NonEmpty.head l & fst, l & List.NonEmpty.toList & List.map snd))
     & print
+  (-2) `mod` 6 & print
