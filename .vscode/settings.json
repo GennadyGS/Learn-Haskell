@@ -1,6 +1,9 @@
 {
     "cSpell.words": [
+      "Bifunctor",
       "collatz",
+      "fmap",
+      "foldl",
       "Hspec",
       "Pangram",
       "Phoityne"
