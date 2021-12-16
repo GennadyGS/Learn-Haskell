@@ -13,4 +13,4 @@ territories :: [String] -> [(Set Coord, Maybe Color)]
 territories board = error "You need to implement this function."
 
 territoryFor :: [String] -> Coord -> Maybe (Set Coord, Maybe Color)
-territoryFor board coord = error "You need to implement this function."
+territoryFor board coord = Nothing
