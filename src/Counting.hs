@@ -1,3 +1,5 @@
+{-# LANGUAGE RankNTypes #-}
+
 module Counting (
     Color(..),
     territories,
@@ -16,15 +18,22 @@ territories board = error "You need to implement this function."
 territoryFor :: [String] -> Coord -> Maybe (Set Coord, Maybe Color)
 territoryFor board coord = 
   coord
-  & traverse (getEmptyNeighbors board)
-  & getTerritoryWithBorderColors
+  & searchForAllReachableNodes (getEmptyNeighbors board)
+  & extractEmptyTerritoryAndColors
   & tryGetTerritoryWithOwner
   where
-    traverse getSuccessors root =
+    searchForAllReachableNodes :: forall a. Ord a => (a -> Set a) -> a -> Set a
+    searchForAllReachableNodes getSuccessors root =
       error "You need to implement this function."
+    
+    getEmptyNeighbors :: [String] -> Coord -> Set Coord
     getEmptyNeighbors board coord = 
       error "You need to implement this function."
-    getTerritoryWithBorderColors territoryWithBorders = 
+    
+    extractEmptyTerritoryAndColors :: Set Coord -> (Set Coord, Set Color)
+    extractEmptyTerritoryAndColors territory = 
       error "You need to implement this function."
-    tryGetTerritoryWithOwner territoryWithBorderColors = 
+    
+    tryGetTerritoryWithOwner :: (Set Coord, Set Color) -> Maybe (Set Coord, Maybe Color)
+    tryGetTerritoryWithOwner (coords, colors) = 
       error "You need to implement this function."
