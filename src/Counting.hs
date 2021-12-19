@@ -35,8 +35,19 @@ territoryFor board coord =
       error "You need to implement this function."
 
     searchForAllReachableNodes :: forall a. Ord a => (a -> Set a) -> a -> Set a
-    searchForAllReachableNodes getSuccessors root =
-      error "You need to implement this function."
+    searchForAllReachableNodes getSuccessors node =
+      dfs getSuccessors Set.empty node
+      where 
+        dfs getSuccessors visitedSet node = 
+          node
+          & getSuccessors 
+          & Set.foldl' dfsIfNotVisited visitedSetExpanded
+          where 
+            dfsIfNotVisited visited node =
+              if not $ Set.member node visited 
+                then dfs getSuccessors visited node
+                else visited
+            visitedSetExpanded = Set.insert node visitedSet
 
     getEmptyNeighbors :: [String] -> Coord -> Set Coord
     getEmptyNeighbors board coord =
