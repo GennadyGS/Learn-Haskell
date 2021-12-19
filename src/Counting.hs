@@ -46,10 +46,15 @@ territoryFor board coord =
           owners =
             occupiedIntersections
               & Set.toList
-              >>= (Maybe.maybeToList . getColor board)
+              & Maybe.mapMaybe (getColor board)
               & Set.fromList
        in (emptyIntersections, owners)
 
     tryGetTerritoryWithOwner :: (Set Coord, Set Color) -> Maybe (Set Coord, Maybe Color)
-    tryGetTerritoryWithOwner (coords, colors) =
-      error "You need to implement this function."
+    tryGetTerritoryWithOwner (coords, colors)
+      | Set.null coords = Nothing
+      | otherwise = Just (coords, tryGetSingleton colors)
+      where
+        tryGetSingleton set
+          | Set.size set == 1 = Just $ Set.elemAt 0 set
+          | otherwise = Nothing
