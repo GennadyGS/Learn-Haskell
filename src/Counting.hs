@@ -12,6 +12,7 @@ import qualified Data.List as List
 import qualified Data.Maybe as Maybe
 import Data.Set (Set)
 import qualified Data.Set as Set
+import Text.Printf
 
 data Color = Black | White deriving (Eq, Ord, Show)
 type Coord = (Int, Int)
@@ -26,13 +27,26 @@ territoryFor board coord =
     & extractEmptyTerritoryAndColors board
     & tryGetTerritoryWithOwner
   where
+    parseColorOrEmpty :: Char -> Maybe Color
+    parseColorOrEmpty 'B' = Just Black
+    parseColorOrEmpty 'W' = Just White
+    parseColorOrEmpty ' ' = Nothing
+    parseColorOrEmpty char = 
+      error $ printf "Invalid color: %s" char
+
     getMaxCoord :: [String] -> Coord
     getMaxCoord board =
-      error "You need to implement this function."
+      (maxRow, maxCol)
+      where
+        maxRow = List.length board
+        maxCol = 
+          if maxRow > 0
+            then List.length $ List.head board
+            else 0
 
     tryGetColor :: [String] -> Coord -> Maybe Color
-    tryGetColor =
-      error "You need to implement this function."
+    tryGetColor board (row, col) =
+      board !! (row - 1) !! (col - 1) & parseColorOrEmpty 
 
     searchForAllReachableNodes :: forall a. Ord a => (a -> Set a) -> a -> Set a
     searchForAllReachableNodes getSuccessors node =
