@@ -26,6 +26,10 @@ territoryFor board coord =
     & extractEmptyTerritoryAndColors board
     & tryGetTerritoryWithOwner
   where
+    getMaxCoord :: [String] -> Coord
+    getMaxCoord board =
+      error "You need to implement this function."
+
     tryGetColor :: [String] -> Coord -> Maybe Color
     tryGetColor =
       error "You need to implement this function."
@@ -38,11 +42,21 @@ territoryFor board coord =
     getEmptyNeighbors board coord =
       case tryGetColor board coord of
         Just _ -> Set.empty
-        Nothing -> Set.empty
+        Nothing ->
+          getNeighbors board coord
+          & Set.filter (Maybe.isNothing . tryGetColor board)
+      where
+        getNeighbors board (row, col) =
+          [(row - 1, col) | row > 1] 
+          ++ [(row + 1, col) | row < maxRow] 
+          ++ [(row, col - 1) | col > 1] 
+          ++ [(row, col + 1) | col < maxCol]
+          & Set.fromList
+          where (maxRow, maxCol) = getMaxCoord board
 
     extractEmptyTerritoryAndColors :: [String] -> Set Coord -> (Set Coord, Set Color)
     extractEmptyTerritoryAndColors board territory =
-      let 
+      let
         (emptyCoords, occupiedCoords) =
           territory
           & Set.partition (Maybe.isNothing . tryGetColor board)
