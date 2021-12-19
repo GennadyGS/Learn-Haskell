@@ -26,8 +26,8 @@ territoryFor board coord =
     & extractEmptyTerritoryAndColors board
     & tryGetTerritoryWithOwner
   where
-    getColor :: [String] -> Coord -> Maybe Color
-    getColor =
+    tryGetColor :: [String] -> Coord -> Maybe Color
+    tryGetColor =
       error "You need to implement this function."
 
     searchForAllReachableNodes :: forall a. Ord a => (a -> Set a) -> a -> Set a
@@ -36,19 +36,22 @@ territoryFor board coord =
 
     getEmptyNeighbors :: [String] -> Coord -> Set Coord
     getEmptyNeighbors board coord =
-      error "You need to implement this function."
+      case tryGetColor board coord of
+        Just _ -> Set.empty
+        Nothing -> Set.empty
 
     extractEmptyTerritoryAndColors :: [String] -> Set Coord -> (Set Coord, Set Color)
     extractEmptyTerritoryAndColors board territory =
-      let (emptyIntersections, occupiedIntersections) =
-            territory
-              & Set.partition (const True)
-          owners =
-            occupiedIntersections
-              & Set.toList
-              & Maybe.mapMaybe (getColor board)
-              & Set.fromList
-       in (emptyIntersections, owners)
+      let 
+        (emptyCoords, occupiedCoords) =
+          territory
+          & Set.partition (Maybe.isNothing . tryGetColor board)
+        owners =
+          occupiedCoords
+          & Set.toList
+          & Maybe.mapMaybe (tryGetColor board)
+          & Set.fromList
+      in (emptyCoords, owners)
 
     tryGetTerritoryWithOwner :: (Set Coord, Set Color) -> Maybe (Set Coord, Maybe Color)
     tryGetTerritoryWithOwner (coords, colors)
