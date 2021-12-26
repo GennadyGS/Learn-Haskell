@@ -78,9 +78,7 @@ territoryFor board coord@(x, y)
     getEmptyNeighbors board coord =
       case tryGetColor board coord of
         Just _ -> Set.empty
-        Nothing ->
-          getNeighbors board coord
-            & Set.filter (Maybe.isNothing . tryGetColor board)
+        Nothing -> getNeighbors board coord
       where
         getNeighbors board (x, y) =
           [(x - 1, y) | x > 1]
