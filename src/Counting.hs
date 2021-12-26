@@ -8,6 +8,7 @@ module Counting
 where
 
 import Data.Function
+import Data.List ((\\))
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
 import Data.Set (Set)
@@ -23,8 +24,7 @@ territories board =
   board
     & getAllCoords
     & List.filter (Maybe.isNothing . tryGetColor board)
-    & splitIntoEquivalenceClasses (territoryFor board)
-    & Maybe.catMaybes
+    & splitIntoEquivalenceClasses (territoryFor board) (Set.toList . fst)
 
 territoryFor :: [String] -> Coord -> Maybe (Set Coord, Maybe Color)
 territoryFor board coord@(x, y)
@@ -38,10 +38,25 @@ territoryFor board coord@(x, y)
     (maxX, maxY) = getMaxCoord board
 
 getAllCoords :: [String] -> [Coord]
-getAllCoords = error "not implemented"
+getAllCoords board =
+  [(x, y) | x <- [1 .. maxX], y <- [1 .. maxY]]
+  where
+    (maxX, maxY) = getMaxCoord board
 
-splitIntoEquivalenceClasses :: forall a b. (a -> b) -> [a] -> [b]
-splitIntoEquivalenceClasses = error "not implemented"
+splitIntoEquivalenceClasses :: forall a b. Eq a => (a -> Maybe b) -> (b -> [a]) -> [a] -> [b]
+splitIntoEquivalenceClasses tryGetClass getClassMembers = List.unfoldr tryGetNextState
+  where
+    tryGetNextState remainingItems =
+      remainingItems
+        & Maybe.mapMaybe tryGetClass
+        & tryGetHead
+        & Prelude.fmap (\c -> (c, remainingItems \\ getClassMembers c))
+
+    tryGetHead :: [a] -> Maybe a
+    tryGetHead list =
+      list
+        & List.uncons
+        & Prelude.fmap fst
 
 parseColorOrEmpty :: Char -> Maybe Color
 parseColorOrEmpty 'B' = Just Black
