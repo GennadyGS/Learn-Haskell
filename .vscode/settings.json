@@ -6,7 +6,9 @@
       "foldl",
       "Hspec",
       "Pangram",
-      "Phoityne"
+      "Phoityne",
+      "uncons",
+      "unfoldr"
     ],
     "editor.detectIndentation": false,
     "editor.tabSize": 2
