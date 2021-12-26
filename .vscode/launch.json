@@ -19,7 +19,7 @@
             "ghciInitialPrompt": "> ",
             "ghciCmd": "stack ghci --no-load --no-build --main-is TARGET",
             "ghciEnv": {},
-            "logFile": "${workspaceFolder}/.vscode/phoityne.log",
+            "logFile": "${workspaceFolder}/.vscode/app.log",
             "logLevel": "WARNING",
             "forceInspect": false
         },
@@ -38,7 +38,7 @@
             "ghciInitialPrompt": "> ",
             "ghciCmd": "stack ghci --test --no-load --no-build --main-is TARGET",
             "ghciEnv": {},
-            "logFile": "${workspaceFolder}/.vscode/phoityne.log",
+            "logFile": "${workspaceFolder}/.vscode/test.log",
             "logLevel": "WARNING",
             "forceInspect": false
         }
