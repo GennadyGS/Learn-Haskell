@@ -37,53 +37,15 @@ territoryFor board coord@(x, y)
   where
     (maxX, maxY) = getMaxCoord board
 
-getAllCoords :: [String] -> [Coord]
-getAllCoords board =
-  [(x, y) | x <- [1 .. maxX], y <- [1 .. maxY]]
-  where
-    (maxX, maxY) = getMaxCoord board
-
 splitIntoEquivalenceClasses :: forall a b. Eq a => (a -> Maybe b) -> (b -> [a]) -> [a] -> [b]
-splitIntoEquivalenceClasses tryGetClass getClassMembers = List.unfoldr tryGetNextState
+splitIntoEquivalenceClasses tryGetClass getClassMembers = 
+  List.unfoldr tryGetNextState
   where
     tryGetNextState remainingItems =
       remainingItems
         & Maybe.mapMaybe tryGetClass
         & tryGetHead
         & Prelude.fmap (\c -> (c, remainingItems \\ getClassMembers c))
-
-    tryGetHead :: [a] -> Maybe a
-    tryGetHead list =
-      list
-        & List.uncons
-        & Prelude.fmap fst
-
-parseColorOrEmpty :: Char -> Maybe Color
-parseColorOrEmpty 'B' = Just Black
-parseColorOrEmpty 'W' = Just White
-parseColorOrEmpty ' ' = Nothing
-parseColorOrEmpty char =
-  error $ printf "Invalid color: %s" char
-
-getMaxCoord :: [String] -> Coord
-getMaxCoord board =
-  (maxX, maxY)
-  where
-    maxY = List.length board
-    maxX =
-      if maxY > 0
-        then List.length $ List.head board
-        else 0
-
-tryGetColor :: [String] -> Coord -> Maybe Color
-tryGetColor board (x, y)
-  | x <= 0 = error $ printf "x = %d but must be >= 1" x
-  | y <= 0 = error $ printf "y = %d but must be >= 1" y
-  | x - 1 > maxX = error $ printf "x = %d but must be <= %d" x maxX
-  | y - 1 > maxY = error $ printf "y = %d but must be <= %d" y maxY
-  | otherwise = board !! (y - 1) !! (x - 1) & parseColorOrEmpty
-  where
-    (maxX, maxY) = getMaxCoord board
 
 searchForAllReachableNodes :: forall a. Ord a => (a -> Set a) -> a -> Set a
 searchForAllReachableNodes getSuccessors node =
@@ -135,3 +97,41 @@ tryGetTerritoryWithOwner (coords, colors)
     tryGetSingleton set
       | Set.size set == 1 = Just $ Set.elemAt 0 set
       | otherwise = Nothing
+
+tryGetColor :: [String] -> Coord -> Maybe Color
+tryGetColor board (x, y)
+  | x <= 0 = error $ printf "x = %d but must be >= 1" x
+  | y <= 0 = error $ printf "y = %d but must be >= 1" y
+  | x - 1 > maxX = error $ printf "x = %d but must be <= %d" x maxX
+  | y - 1 > maxY = error $ printf "y = %d but must be <= %d" y maxY
+  | otherwise = board !! (y - 1) !! (x - 1) & parseColorOrEmpty
+  where
+    (maxX, maxY) = getMaxCoord board
+
+getAllCoords :: [String] -> [Coord]
+getAllCoords board =
+  [(x, y) | x <- [1 .. maxX], y <- [1 .. maxY]]
+  where
+    (maxX, maxY) = getMaxCoord board
+
+getMaxCoord :: [String] -> Coord
+getMaxCoord board =
+  (maxX, maxY)
+  where
+    maxY = List.length board
+    maxX =
+      if maxY > 0
+        then List.length $ List.head board
+        else 0
+
+parseColorOrEmpty :: Char -> Maybe Color
+parseColorOrEmpty 'B' = Just Black
+parseColorOrEmpty 'W' = Just White
+parseColorOrEmpty ' ' = Nothing
+parseColorOrEmpty char = error $ printf "Invalid color: %s" char
+
+tryGetHead :: [a] -> Maybe a
+tryGetHead list =
+  list
+    & List.uncons
+    & Prelude.fmap fst
